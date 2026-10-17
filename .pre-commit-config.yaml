@@ -1,0 +1,29 @@
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v6.0.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-yaml
+
+  - repo: https://github.com/antonbabenko/pre-commit-terraform
+    rev: v1.83.0
+    hooks:
+      - id: terraform_fmt
+      - id: terraform_tflint
+      - id: terraform_docs
+        exclude: '.*examples/.*'
+        args:
+          - --hook-config=--path-to-file=README.md
+          - --hook-config=--add-to-existing-file=true
+          - --hook-config=--create-file-if-not-exist=true
+          - --args=--config=.terraform-docs.yml
+
+
+  # - repo: local
+  #   hooks:
+  #     - id: custom-readme-enricher
+  #       name: Enrich Terraform READMEs
+  #       entry: python3 scripts/enrich_readme.py
+  #       language: system
+  #       files: ^modules/.*README\.md$
