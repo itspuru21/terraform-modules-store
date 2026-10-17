@@ -1,0 +1,44 @@
+name: Terraform PR Checks
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  lint-and-format:
+    name: Run Pre-Commit Hooks
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: "1.5.0"
+
+      - name: Setup TFLint
+        uses: terraform-linters/setup-tflint@v4
+        with:
+          tflint_version: "v0.50.0"
+
+      - name: Setup Terraform-Docs
+        run: |
+          curl -sSLo ./terraform-docs.tar.gz https://github.com/terraform-docs/terraform-docs/releases/download/v0.17.0/terraform-docs-v0.17.0-linux-amd64.tar.gz
+          tar -xzf terraform-docs.tar.gz
+          sudo mv terraform-docs /usr/local/bin/
+
+      - name: Setup Python (for pre-commit)
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+
+      - name: Install Pre-Commit
+        run: pip install pre-commit
+
+      - name: Execute Pre-Commit Checks
+        # --show-diff-on-failure ensures that if a formatting check fails,
+        # the GitHub Actions log will show exactly which line needs fixing.
+        run: pre-commit run --all-files --color=always --show-diff-on-failure
