@@ -27,7 +27,6 @@ This monorepo strictly separates reusable module logic from executable environme
 Code quality and documentation are strictly enforced via GitHub Actions and local `pre-commit` hooks. Every Pull Request must pass the following checks before merging into `main`:
 
 *   **Terraform Fmt:** Enforces canonical HCL formatting.
-*   **Terraform Validate:** Verifies syntax and internal consistency of all modules.
 *   **TFLint:** Static analysis to catch provider-specific errors (configured for AWS) and enforce industry best practices.
 *   **Terraform-Docs:** Automatically injects inputs, outputs, and version requirements into each module's `README.md` based on a custom Go template.
 *   **Branch Protection:** Direct commits to `main` are blocked. Squash-and-merge strategies are enforced.
