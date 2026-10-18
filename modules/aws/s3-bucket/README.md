@@ -2,6 +2,7 @@
 
 [![Terraform Version](https://img.shields.io/badge/Terraform-%3E%3D_1.5.0-623CE4.svg?logo=terraform)](https://www.terraform.io/)
 [![AWS Provider](https://img.shields.io/badge/AWS_Provider-%3E%3D_6.0-FF9900.svg?logo=amazon-aws)](https://registry.terraform.io/providers/hashicorp/aws/latest)
+[![PR Checks](https://github.com/itspuru21/terraform-modules-store/actions/workflows/pr-checks.yml/badge.svg)](https://github.com/itspuru21/terraform-modules-store/actions)
 
 This module provisions a secure, standard Amazon S3 bucket.
 
@@ -9,7 +10,7 @@ This module provisions a secure, standard Amazon S3 bucket.
 
 ```hcl
 module "s3_bucket" {
-  source      = "github.com/itspuru21/terraform-modules-store/modules/aws/s3-bucket"
+  source      = "github.com/itspuru21/terraform-modules-store//modules/aws/s3-bucket"
   bucket_name = "my-unique-bucket-name"
 
   tags = {
@@ -17,6 +18,15 @@ module "s3_bucket" {
   }
 }
 ```
+
+> [!IMPORTANT]
+> **Understanding Terraform Module Sourcing**
+>
+> Using the double forward slash (`//`) in the `source` URL is critical. It explicitly tells Terraform which module subdirectory to execute from the downloaded repository during the `init` phase. As showed in the above Usage example.
+>
+> By default, Terraform relies on standard Git mechanisms to fetch the module code. Because Git must clone the entire repository tree, there is currently no way to configure the root module to download only a specific subfolder.
+>
+> However, there is no need to worry about storage bloat. Even a monorepo containing over 500 modules will barely reach 50 MB, as HCL files are simply lightweight, plain-text code.
 
 <!-- BEGIN_TF_DOCS -->
 ## Requirements
